@@ -10,3 +10,5 @@ class Command {
  }
  
  module.exports = Command;
+
+ ///*The code exports the Command class as a module, so that it can be imported and used by other files. 
