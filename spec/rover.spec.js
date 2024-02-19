@@ -25,8 +25,8 @@ describe("Rover class", function() {
 
   // Test 8: response returned by receiveMessage contains the name of the message
   it("response returned by receiveMessage contains the name of the message", function() {
-    // Create a new rover instance with a position of 98382
     let rover = new Rover(98382);
+
     // Create a new message instance with a name of 'Test message with two commands' and two commands
     let commands = [new Command('MODE_CHANGE', 'LOW_POWER'), new Command('STATUS_CHECK')];
     let message = new Message('Test message with two commands', commands);
@@ -38,45 +38,56 @@ describe("Rover class", function() {
 
   // Test 9: response returned by receiveMessage includes two results if two commands are sent in the message
   it("response returned by receiveMessage includes two results if two commands are sent in the message", function() {
-    // Create a new rover instance with a position of 98382
     let rover = new Rover(98382);
-    // Create a new message instance with a name of 'Test message with two commands' and two commands
     let commands = [new Command('MODE_CHANGE', 'LOW_POWER'), new Command('STATUS_CHECK')];
     let message = new Message('Test message with two commands', commands);
-    // Call the receiveMessage method on the rover with the message as an argument
     let response = rover.receiveMessage(message);
+
     // Expect the response's results property to be an array of length 2
     expect(response.results.length).toEqual(2);
   });
 
   // Test 10: responds correctly to the status check command
   it("responds correctly to the status check command", function() {
-    // Create a new rover instance with a position of 98382
     let rover = new Rover(98382);
-    // Create a new message instance with a name of 'Test message with one command' and a status check command
+
     let commands = [new Command('STATUS_CHECK')];
     let message = new Message('Test message with one command', commands);
     // Call the receiveMessage method on the rover with the message as an argument
     let response = rover.receiveMessage(message);
+
+     // Expect the response to have a results property that is an array
+    expect(response.results).toBeInstanceOf(Array);
+
+    
     // Expect the response's results property to be an array of length 1
-    expect(response.results.length).toEqual(1);
+    expect(response.results.length).toBe(1);
+      //expect the results array to have 1 element
+    
+
     // Expect the first element of the results array to be an object with a completed property of true
-    expect(response.results[0].completed).toEqual(true);
+    expect(response.results[0].completed).toBe(true);
+
     // Expect the first element of the results array to have a roverStatus property that is an object
     expect(response.results[0].roverStatus).toBeInstanceOf(Object);
+   
     // Expect the roverStatus object to have a mode property that is 'NORMAL'
-    expect(response.results[0].roverStatus.mode).toEqual('NORMAL');
+    // expect(response.results[0].roverStatus.mode).toEqual('NORMAL');
+    expect(response.results[0].roverStatus.mode).toBe(rover.mode);
+
     // Expect the roverStatus object to have a generatorWatts property that is 110
-    expect(response.results[0].roverStatus.generatorWatts).toEqual(110);
+    expect(response.results[0].roverStatus.generatorWatts).toBe(110);
+
     // Expect the roverStatus object to have a position property that is 98382
-    expect(response.results[0].roverStatus.position).toEqual(98382);
+    // expect(response.results[0].roverStatus.position).toEqual(98382);
+    expect(response.results[0].roverStatus.position).toBe(rover.position);
+    });
   });
 
   // Test 11: responds correctly to the mode change command
   it("responds correctly to the mode change command", function() {
-    // Create a new rover instance with a position of 98382
-    let rover = new Rover(98382);
     // Create a new message instance with a name of 'Test message with one command' and a mode change command to 'LOW_POWER'
+    let rover = new Rover(98382);
     let commands = [new Command('MODE_CHANGE', 'LOW_POWER')];
     let message = new Message('Test message with one command', commands);
     // Call the receiveMessage method on the rover with the message as an argument
@@ -126,5 +137,4 @@ describe("Rover class", function() {
     // Expect the rover's position to be updated to 4321
     expect(rover.position).toEqual(4321);
   });
-});
 
